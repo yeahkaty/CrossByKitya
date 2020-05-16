@@ -10,6 +10,7 @@
 HINSTANCE hInst;                                // current instance
 WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
+COLORREF color = RGB(250, 240, 250);
 
 // Forward declarations of functions included in this code module:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -124,6 +125,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
 HFONT bigButtonFont;
 HFONT titleFont;
+HBRUSH hBrush; 
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -183,19 +185,28 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         }
         break;
     case WM_PAINT:
-        {
-            PAINTSTRUCT ps;
-            HDC hdc = BeginPaint(hWnd, &ps);
-            
-            TCHAR titleText[] = L"CrossByKitya";
+    {
 
-            SetTextColor(hdc, RGB(255, 170, 220));
-            SetBkColor(hdc, RGB(255, 255, 255));
-            SelectObject(hdc, titleFont);
-            TextOut(hdc, 530, 10, titleText, _ARRAYSIZE(titleText));
-            
-            EndPaint(hWnd, &ps);
-        }
+        PAINTSTRUCT ps; //экземпляр структуры рисования
+        HDC hdc = BeginPaint(hWnd, &ps); //начали рисование
+        hBrush = CreateSolidBrush(color);
+        SelectObject(hdc, hBrush);
+
+        SetBkMode(hdc, TRANSPARENT);
+        SetBkColor(hdc, color);
+        Rectangle(hdc, 50, 160, 800, 600);
+        TextOut(hdc, 60, 170, L"Выберите цвет главного окна:", 28);
+
+        TCHAR titleText[] = L"CrossByKitya";
+
+        SetTextColor(hdc, RGB(255, 170, 220));
+        SetBkColor(hdc, RGB(255, 255, 255));
+        SelectObject(hdc, titleFont);
+        TextOut(hdc, 530, 10, titleText, _ARRAYSIZE(titleText));
+
+        EndPaint(hWnd, &ps); //закончили рисование
+        break;
+    }
         break;
     case WM_DESTROY:
         PostQuitMessage(0);
