@@ -10,7 +10,7 @@
 HINSTANCE hInst;                                // current instance
 WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
-
+COLORREF color = RGB(250, 240, 250);
 // Forward declarations of functions included in this code module:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
@@ -121,12 +121,30 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //  WM_DESTROY  - post a quit message and return
 //
 //
+HFONT bigButtonFont;
+HFONT titleFont;
+HBRUSH hBrush;
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
+    case WM_CREATE:
+    {
+        bigButtonFont = CreateFont(50, 22, 0, 0, FW_DONTCARE, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_OUTLINE_PRECIS,
+            CLIP_DEFAULT_PRECIS, ANTIALIASED_QUALITY, VARIABLE_PITCH, TEXT("Calibri"));
+        HWND button0 = CreateWindow(TEXT("BUTTON"), TEXT("Кроссворды"), WS_VISIBLE | WS_CHILD, 850, 160, 500, 100, hWnd, (HMENU)NULL, NULL, NULL);
+        HWND button1 = CreateWindow(TEXT("BUTTON"), TEXT("Выход"), WS_VISIBLE | WS_CHILD, 850, 300, 500, 100, hWnd, (HMENU)NULL, NULL, NULL);
+
+        SendMessage(button0, WM_SETFONT, (WPARAM)bigButtonFont, TRUE);
+        SendMessage(button1, WM_SETFONT, (WPARAM)bigButtonFont, TRUE);
+
+        titleFont = CreateFont(72, 32, 0, 0, FW_DONTCARE, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_OUTLINE_PRECIS,
+            CLIP_DEFAULT_PRECIS, ANTIALIASED_QUALITY, VARIABLE_PITCH, TEXT("Calibri"));
+
+    }
     case WM_COMMAND:
         {
+
             int wmId = LOWORD(wParam);
             // Parse the menu selections:
             switch (wmId)
@@ -140,14 +158,35 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             default:
                 return DefWindowProc(hWnd, message, wParam, lParam);
             }
+
         }
+
+
+
+
         break;
     case WM_PAINT:
         {
-            PAINTSTRUCT ps;
-            HDC hdc = BeginPaint(hWnd, &ps);
-            // TODO: Add any drawing code that uses hdc here...
-            EndPaint(hWnd, &ps);
+  
+            PAINTSTRUCT ps; //экземпляр структуры рисования
+            HDC hdc = BeginPaint(hWnd, &ps); //начали рисование
+            hBrush = CreateSolidBrush(color);
+            SelectObject(hdc, hBrush);
+
+            SetBkMode(hdc, TRANSPARENT);
+            SetBkColor(hdc, color);
+            Rectangle(hdc, 50, 160, 800, 600);
+            TextOut(hdc, 60, 170, L"Выберите цвет главного окна:", 28);
+
+            TCHAR titleText[] = L"CrossByKitya";
+
+            SetTextColor(hdc, RGB(255, 170, 220));
+            SetBkColor(hdc, RGB(255, 255, 255));
+            SelectObject(hdc, titleFont);
+            TextOut(hdc, 530, 10, titleText, _ARRAYSIZE(titleText));
+
+            EndPaint(hWnd, &ps); //закончили рисование
+            break;
         }
         break;
     case WM_DESTROY:
