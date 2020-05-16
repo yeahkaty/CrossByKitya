@@ -125,6 +125,36 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
+    case WM_CREATE: 
+    {        
+        
+        HFONT hFont;
+        hFont = CreateFont(50, 22, 0, 0, FW_DONTCARE, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_OUTLINE_PRECIS,
+            CLIP_DEFAULT_PRECIS, ANTIALIASED_QUALITY, VARIABLE_PITCH, TEXT("Calibri"));
+        HWND button0 = CreateWindow(TEXT("BUTTON"), TEXT("Кроссворды"), WS_VISIBLE | WS_CHILD, 850, 160, 500, 100, hWnd, (HMENU) NULL, NULL, NULL);
+        HWND button1 = CreateWindow(TEXT("BUTTON"), TEXT("Выход"), WS_VISIBLE | WS_CHILD, 850, 300, 500, 100, hWnd, (HMENU)NULL, NULL, NULL);
+
+        SendMessage(button0, WM_SETFONT, (WPARAM)hFont, TRUE);
+        SendMessage(button1, WM_SETFONT, (WPARAM)hFont, TRUE);
+
+        /*
+        HFONT CreateFont(
+            int nHeight,               // высота шрифта
+            int nWidth,                // средняя ширина символа
+            int nEscapement,           // угол наклона
+            int nOrientation,          // угол ориентации базисной линии
+            int fnWeight,              // толщина шрифта
+            DWORD fdwItalic,           // описатель параметра курсивного шрифта
+            DWORD fdwUnderline,        // описатель параметра подчеркивания
+            DWORD fdwStrikeOut,        // описатель параметра зачеркивания
+            DWORD fdwCharSet,          // идентификатор набора символов
+            DWORD fdwOutputPrecision,  // точность вывода
+            DWORD fdwClipPrecision,    // точность отсечения
+            DWORD fdwQuality,          // качество вывода
+            DWORD fdwPitchAndFamily,   // шаг между символами шрифта и семейство
+            LPCTSTR lpszFace           // имя гарнитуры шрифта
+        );*/
+    }
     case WM_COMMAND:
         {
             int wmId = LOWORD(wParam);
