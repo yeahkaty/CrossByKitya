@@ -123,6 +123,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 HFONT bigButtonFont;
 HFONT titleFont;
+HFONT textFont;
 HBRUSH hBrush;
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -139,6 +140,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         SendMessage(button1, WM_SETFONT, (WPARAM)bigButtonFont, TRUE);
 
         titleFont = CreateFont(72, 32, 0, 0, FW_DONTCARE, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_OUTLINE_PRECIS,
+            CLIP_DEFAULT_PRECIS, ANTIALIASED_QUALITY, VARIABLE_PITCH, TEXT("Calibri"));
+        textFont = CreateFont(30, 14, 0, 0, FW_DONTCARE, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_OUTLINE_PRECIS,
             CLIP_DEFAULT_PRECIS, ANTIALIASED_QUALITY, VARIABLE_PITCH, TEXT("Calibri"));
 
     }
@@ -173,13 +176,22 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             hBrush = CreateSolidBrush(color);
             SelectObject(hdc, hBrush);
 
-            SetBkMode(hdc, TRANSPARENT);
+            //основной текст главного меню
+            
             SetBkColor(hdc, color);
             Rectangle(hdc, 50, 160, 800, 600);
-            TextOut(hdc, 60, 170, L"Выберите цвет главного окна:", 28);
+            SetTextColor(hdc, RGB(200, 100, 165));
+            SelectObject(hdc, textFont);
+            TCHAR MainText[] = L"Добро пожаловать в игру CrossByKitya!";
+            TCHAR MainText1[] = L"Что бы начать игру нажмите на кнопку КРОССВОРДЫ.";
+            TCHAR MainText2[] = L"Если вы хотите покинуть игру, нажмите на кнопку ВЫХОД.";
+            TextOut(hdc, 60, 170, MainText, _ARRAYSIZE(MainText));
+            TextOut(hdc, 60, 210, MainText1, _ARRAYSIZE(MainText1));
+            TextOut(hdc, 60, 250, MainText2, _ARRAYSIZE(MainText2));
+
+            //title
 
             TCHAR titleText[] = L"CrossByKitya";
-
             SetTextColor(hdc, RGB(255, 170, 220));
             SetBkColor(hdc, RGB(255, 255, 255));
             SelectObject(hdc, titleFont);
