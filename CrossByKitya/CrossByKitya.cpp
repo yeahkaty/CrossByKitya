@@ -23,9 +23,9 @@ INT_PTR CALLBACK    Exit(HWND, UINT, WPARAM, LPARAM);
 
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
-                     _In_opt_ HINSTANCE hPrevInstance,
-                     _In_ LPWSTR    lpCmdLine,
-                     _In_ int       nCmdShow)
+    _In_opt_ HINSTANCE hPrevInstance,
+    _In_ LPWSTR    lpCmdLine,
+    _In_ int       nCmdShow)
 {
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
@@ -38,7 +38,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     MyRegisterClass(hInstance);
 
     // Perform application initialization:
-    if (!InitInstance (hInstance, nCmdShow))
+    if (!InitInstance(hInstance, nCmdShow))
     {
         return FALSE;
     }
@@ -57,7 +57,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         }
     }
 
-    return (int) msg.wParam;
+    return (int)msg.wParam;
 }
 
 
@@ -73,17 +73,17 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 
     wcex.cbSize = sizeof(WNDCLASSEX);
 
-    wcex.style          = CS_HREDRAW | CS_VREDRAW;
-    wcex.lpfnWndProc    = WndProc;
-    wcex.cbClsExtra     = 0;
-    wcex.cbWndExtra     = 0;
-    wcex.hInstance      = hInstance;
-    wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_CROSSBYKITYA));
-    wcex.hCursor        = LoadCursor(nullptr, IDC_ARROW);
-    wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
-    wcex.lpszMenuName   = MAKEINTRESOURCEW(IDC_CROSSBYKITYA);
-    wcex.lpszClassName  = szWindowClass;
-    wcex.hIconSm        = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
+    wcex.style = CS_HREDRAW | CS_VREDRAW;
+    wcex.lpfnWndProc = WndProc;
+    wcex.cbClsExtra = 0;
+    wcex.cbWndExtra = 0;
+    wcex.hInstance = hInstance;
+    wcex.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_CROSSBYKITYA));
+    wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
+    wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+    wcex.lpszMenuName = MAKEINTRESOURCEW(IDC_CROSSBYKITYA);
+    wcex.lpszClassName = szWindowClass;
+    wcex.hIconSm = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 
     return RegisterClassExW(&wcex);
 }
@@ -100,20 +100,20 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 //
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
-   hInst = hInstance; // Store instance handle in our global variable
+    hInst = hInstance; // Store instance handle in our global variable
 
-   HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+        CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
 
-   if (!hWnd)
-   {
-      return FALSE;
-   }
+    if (!hWnd)
+    {
+        return FALSE;
+    }
 
-   ShowWindow(hWnd, nCmdShow);
-   UpdateWindow(hWnd);
+    ShowWindow(hWnd, nCmdShow);
+    UpdateWindow(hWnd);
 
-   return TRUE;
+    return TRUE;
 }
 
 //
@@ -129,19 +129,19 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
 HFONT bigButtonFont;
 HFONT titleFont;
-HBRUSH hBrush; 
+HBRUSH hBrush;
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
-    case WM_CREATE: 
-    {        
+    case WM_CREATE:
+    {
 
         bigButtonFont = CreateFont(50, 22, 0, 0, FW_DONTCARE, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_OUTLINE_PRECIS,
             CLIP_DEFAULT_PRECIS, ANTIALIASED_QUALITY, VARIABLE_PITCH, TEXT("Calibri"));
-        HWND button0 = CreateWindow(TEXT("BUTTON"), TEXT("Кроссворды"), WS_VISIBLE | WS_CHILD, 850, 160, 500, 100, hWnd, (HMENU) BTN_MAIN_CROSS, hInst, NULL);
-        HWND button1 = CreateWindow(TEXT("BUTTON"), TEXT("Выход"), WS_VISIBLE | WS_CHILD, 850, 300, 500, 100, hWnd, (HMENU) BTN_MAIN_EXIT, hInst, NULL);
+        HWND button0 = CreateWindow(TEXT("BUTTON"), TEXT("Кроссворды"), WS_VISIBLE | WS_CHILD, 850, 160, 500, 100, hWnd, (HMENU)BTN_MAIN_CROSS, hInst, NULL);
+        HWND button1 = CreateWindow(TEXT("BUTTON"), TEXT("Выход"), WS_VISIBLE | WS_CHILD, 850, 300, 500, 100, hWnd, (HMENU)BTN_MAIN_EXIT, hInst, NULL);
         SendMessage(button0, WM_SETFONT, (WPARAM)bigButtonFont, TRUE);
         SendMessage(button1, WM_SETFONT, (WPARAM)bigButtonFont, TRUE);
 
@@ -168,34 +168,34 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     }
     break;
     case WM_COMMAND:
+    {
+        int wmId = LOWORD(wParam);
+        // Parse the menu selections:
+        switch (wmId)
         {
-            int wmId = LOWORD(wParam);
-            // Parse the menu selections:
-            switch (wmId)
-            {
-            case IDM_ABOUT:
-                DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
-                break;
-            case IDM_EXIT:
+        case IDM_ABOUT:
+            DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
+            break;
+        case IDM_EXIT:
+            DestroyWindow(hWnd);
+            break;
+        case BTN_MAIN_CROSS:
+        {
+            // TODO: MainCross button
+        }
+        break;
+        case BTN_MAIN_EXIT:
+        {
+            if (DialogBox(hInst, MAKEINTRESOURCE(IDD_EXIT), hWnd, Exit) == AcceptExit) {
                 DestroyWindow(hWnd);
-                break;
-            case BTN_MAIN_CROSS:
-            {
-                // TODO: MainCross button
-            }
-                break;
-            case BTN_MAIN_EXIT: 
-            {
-                if (DialogBox(hInst, MAKEINTRESOURCE(IDD_EXIT), hWnd, Exit) == AcceptExit) {
-                    DestroyWindow(hWnd);
-                }
-            }
-                break;
-            default:
-                return DefWindowProc(hWnd, message, wParam, lParam);
             }
         }
         break;
+        default:
+            return DefWindowProc(hWnd, message, wParam, lParam);
+        }
+    }
+    break;
     case WM_PAINT:
     {
 
@@ -219,7 +219,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         EndPaint(hWnd, &ps); //закончили рисование
         break;
     }
-        break;
+    break;
     case WM_DESTROY:
         PostQuitMessage(0);
         break;
@@ -257,7 +257,7 @@ INT_PTR CALLBACK Exit(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_INITDIALOG:
         return (INT_PTR)TRUE;
 
-    case WM_COMMAND: 
+    case WM_COMMAND:
     {
         if (LOWORD(wParam) == AcceptExit || LOWORD(wParam) == IDCANCEL)
         {
@@ -269,8 +269,8 @@ INT_PTR CALLBACK Exit(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
             return (INT_PTR)FALSE;
         }
     }
-        
-        break;
+
+    break;
     }
     return (INT_PTR)FALSE;
 }
