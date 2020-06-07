@@ -1,5 +1,6 @@
 // Message handler for about box.
 #include "CrossByKitya.h"
+#include "MainWindow.h"
 
 
 INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
@@ -95,7 +96,18 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
             break;
         case BTN_MAIN_CROSS:
         {
-            // TODO: MainCross button
+            HWND hWnd = CreateWindowW(szChooseCrossesWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+                CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInst, nullptr);
+
+            if (!hWnd)
+            {
+                return FALSE;
+            }
+
+            ShowWindow(hWnd, 1);
+            UpdateWindow(hWnd);
+
+            return TRUE;
         }
         break;
         case BTN_MAIN_EXIT:

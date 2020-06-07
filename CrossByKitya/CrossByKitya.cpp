@@ -2,6 +2,7 @@
 //
 
 #include "MainWindow.h"
+#include "ChooseCrosses.h"
 #include "CrossByKitya.h"
 
 // Global variables
@@ -16,6 +17,8 @@ HBRUSH hBrush = CreateSolidBrush(color);
 HINSTANCE hInst;                                // current instance
 WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR szMainWindowClass[MAX_LOADSTRING];
+WCHAR szChooseCrossesWindowClass[MAX_LOADSTRING];
+
 // Forward declarations of functions included in this code module:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
@@ -35,6 +38,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     // Initialize global strings
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
     LoadStringW(hInstance, IDC_CROSSBYKITYA, szMainWindowClass, MAX_LOADSTRING);
+    LoadStringW(hInstance, IDS_ChooseCrossesClass, szChooseCrossesWindowClass, MAX_LOADSTRING);
+
+    
     MyRegisterClass(hInstance);
 
     // Perform application initialization:
@@ -86,7 +92,23 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     mainWcex.lpszClassName = szMainWindowClass;
     mainWcex.hIconSm = LoadIcon(mainWcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 
-    return RegisterClassExW(&mainWcex);
+    RegisterClassExW(&mainWcex);
+
+    chooseCrossesWcex.cbSize = sizeof(WNDCLASSEX);
+    chooseCrossesWcex.style = CS_HREDRAW | CS_VREDRAW;
+    chooseCrossesWcex.lpfnWndProc = ChooseCrossesWndProc;
+    chooseCrossesWcex.cbClsExtra = 0;
+    chooseCrossesWcex.cbWndExtra = 0;
+    chooseCrossesWcex.hInstance = hInstance;
+    chooseCrossesWcex.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_CROSSBYKITYA));
+    chooseCrossesWcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
+    chooseCrossesWcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+    chooseCrossesWcex.lpszMenuName = MAKEINTRESOURCEW(IDC_CROSSBYKITYA);
+    chooseCrossesWcex.lpszClassName = szChooseCrossesWindowClass;
+    chooseCrossesWcex.hIconSm = LoadIcon(chooseCrossesWcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
+    return RegisterClassExW(&chooseCrossesWcex);
+
+
 }
 
 //
