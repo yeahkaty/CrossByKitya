@@ -15,7 +15,7 @@ COLORREF color = RGB(250, 240, 250);
 HBRUSH hBrush = CreateSolidBrush(color);
 HINSTANCE hInst;                                // current instance
 WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
-WCHAR szWindowClass[MAX_LOADSTRING];
+WCHAR szMainWindowClass[MAX_LOADSTRING];
 // Forward declarations of functions included in this code module:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
@@ -34,7 +34,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     // Initialize global strings
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
-    LoadStringW(hInstance, IDC_CROSSBYKITYA, szWindowClass, MAX_LOADSTRING);
+    LoadStringW(hInstance, IDC_CROSSBYKITYA, szMainWindowClass, MAX_LOADSTRING);
     MyRegisterClass(hInstance);
 
     // Perform application initialization:
@@ -69,23 +69,24 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 //
 ATOM MyRegisterClass(HINSTANCE hInstance)
 {
-    WNDCLASSEXW wcex;
+    WNDCLASSEXW mainWcex;
+    WNDCLASSEXW chooseCrossesWcex;
 
-    wcex.cbSize = sizeof(WNDCLASSEX);
+    mainWcex.cbSize = sizeof(WNDCLASSEX);
 
-    wcex.style = CS_HREDRAW | CS_VREDRAW;
-    wcex.lpfnWndProc = WndProc;
-    wcex.cbClsExtra = 0;
-    wcex.cbWndExtra = 0;
-    wcex.hInstance = hInstance;
-    wcex.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_CROSSBYKITYA));
-    wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
-    wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
-    wcex.lpszMenuName = MAKEINTRESOURCEW(IDC_CROSSBYKITYA);
-    wcex.lpszClassName = szWindowClass;
-    wcex.hIconSm = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
+    mainWcex.style = CS_HREDRAW | CS_VREDRAW;
+    mainWcex.lpfnWndProc = MainWndProc;
+    mainWcex.cbClsExtra = 0;
+    mainWcex.cbWndExtra = 0;
+    mainWcex.hInstance = hInstance;
+    mainWcex.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_CROSSBYKITYA));
+    mainWcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
+    mainWcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+    mainWcex.lpszMenuName = MAKEINTRESOURCEW(IDC_CROSSBYKITYA);
+    mainWcex.lpszClassName = szMainWindowClass;
+    mainWcex.hIconSm = LoadIcon(mainWcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 
-    return RegisterClassExW(&wcex);
+    return RegisterClassExW(&mainWcex);
 }
 
 //
@@ -102,7 +103,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
     hInst = hInstance; // Store instance handle in our global variable
 
-    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+    HWND hWnd = CreateWindowW(szMainWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
 
     if (!hWnd)

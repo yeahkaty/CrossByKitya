@@ -10,7 +10,7 @@
 // Global Variables:
 extern HINSTANCE hInst;                                // current instance
 extern WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
-extern WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
+extern WCHAR szMainWindowClass[MAX_LOADSTRING];            // the main window class name
 extern COLORREF color;
 extern HFONT bigButtonFont;
 extern HFONT titleFont;

@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ChooseCrosses.h" />
     <ClInclude Include="CrossByKitya.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="MainWindow.h" />
@@ -154,6 +155,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ChooseCrosses.cpp" />
     <ClCompile Include="CrossByKitya.cpp" />
     <ClCompile Include="MainWindow.cpp" />
   </ItemGroup>
