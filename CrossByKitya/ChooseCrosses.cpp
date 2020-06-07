@@ -15,6 +15,9 @@ LRESULT CALLBACK    ChooseCrossesWndProc(HWND hWnd, UINT message, WPARAM wParam,
         // Parse the menu selections:
         switch (wmId)
         {
+        case IDM_ABOUT:
+            DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
+            break;
         case IDM_EXIT:
             DestroyWindow(hWnd);
             break;

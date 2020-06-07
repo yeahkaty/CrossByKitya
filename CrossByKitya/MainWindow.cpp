@@ -2,25 +2,7 @@
 #include "CrossByKitya.h"
 #include "MainWindow.h"
 
-
-INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
-{
-    UNREFERENCED_PARAMETER(lParam);
-    switch (message)
-    {
-    case WM_INITDIALOG:
-        return (INT_PTR)TRUE;
-
-    case WM_COMMAND:
-        if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
-        {
-            EndDialog(hDlg, LOWORD(wParam));
-            return (INT_PTR)TRUE;
-        }
-        break;
-    }
-    return (INT_PTR)FALSE;
-}
+HWND chooseCrossesWnd;
 
 INT_PTR CALLBACK Exit(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -96,16 +78,16 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
             break;
         case BTN_MAIN_CROSS:
         {
-            HWND hWnd = CreateWindowW(szChooseCrossesWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-                CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInst, nullptr);
+            chooseCrossesWnd = CreateWindowW(szChooseCrossesWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+                CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, mainWnd, nullptr, hInst, nullptr);
 
-            if (!hWnd)
+            if (!chooseCrossesWnd)
             {
                 return FALSE;
             }
 
-            ShowWindow(hWnd, 1);
-            UpdateWindow(hWnd);
+            ShowWindow(chooseCrossesWnd, 1);
+            UpdateWindow(chooseCrossesWnd);
 
             return TRUE;
         }

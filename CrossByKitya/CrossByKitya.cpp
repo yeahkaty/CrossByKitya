@@ -19,11 +19,11 @@ WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR szMainWindowClass[MAX_LOADSTRING];
 WCHAR szChooseCrossesWindowClass[MAX_LOADSTRING];
 
+HWND mainWnd;
+
 // Forward declarations of functions included in this code module:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
-
-
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     _In_opt_ HINSTANCE hPrevInstance,
@@ -125,18 +125,37 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
     hInst = hInstance; // Store instance handle in our global variable
 
-    HWND hWnd = CreateWindowW(szMainWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+    mainWnd = CreateWindowW(szMainWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
 
-    if (!hWnd)
+    if (!mainWnd)
     {
         return FALSE;
     }
 
-    ShowWindow(hWnd, nCmdShow);
-    UpdateWindow(hWnd);
+    ShowWindow(mainWnd, nCmdShow);
+    UpdateWindow(mainWnd);
 
     return TRUE;
+}
+
+INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+{
+    UNREFERENCED_PARAMETER(lParam);
+    switch (message)
+    {
+    case WM_INITDIALOG:
+        return (INT_PTR)TRUE;
+
+    case WM_COMMAND:
+        if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
+        {
+            EndDialog(hDlg, LOWORD(wParam));
+            return (INT_PTR)TRUE;
+        }
+        break;
+    }
+    return (INT_PTR)FALSE;
 }
 
 //
