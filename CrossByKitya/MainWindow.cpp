@@ -4,6 +4,11 @@
 
 HWND chooseCrossesWnd;
 
+HWND button0;
+HWND button1;
+
+void RepaintMe(HWND hWnd);
+
 INT_PTR CALLBACK Exit(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
     UNREFERENCED_PARAMETER(lParam);
@@ -38,10 +43,11 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
     {
 
         
-        HWND button0 = CreateWindow(TEXT("BUTTON"), TEXT("Кроссворды"), WS_VISIBLE | WS_CHILD, 850, 160, 500, 100, hWnd, (HMENU)BTN_MAIN_CROSS, hInst, NULL);
-        HWND button1 = CreateWindow(TEXT("BUTTON"), TEXT("Выход"), WS_VISIBLE | WS_CHILD, 850, 300, 500, 100, hWnd, (HMENU)BTN_MAIN_EXIT, hInst, NULL);
+        button0 = CreateWindow(TEXT("BUTTON"), TEXT("Кроссворды"), WS_VISIBLE | WS_CHILD, 850, 160, 500, 100, hWnd, (HMENU)BTN_MAIN_CROSS, hInst, NULL);
+        button1 = CreateWindow(TEXT("BUTTON"), TEXT("Выход"), WS_VISIBLE | WS_CHILD, 850, 300, 500, 100, hWnd, (HMENU)BTN_MAIN_EXIT, hInst, NULL);
         SendMessage(button0, WM_SETFONT, (WPARAM)bigButtonFont, TRUE);
         SendMessage(button1, WM_SETFONT, (WPARAM)bigButtonFont, TRUE);
+
 
         
 
@@ -64,6 +70,16 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
         );*/
     }
     break;
+    case BackToMainMessage: {
+        int b0style = GetWindowLong(button0, GWL_STYLE);
+        int b1style = GetWindowLong(button1, GWL_STYLE);
+        SetWindowLong(button0, GWL_STYLE, (unsigned int)(b0style | (WS_VISIBLE)));
+        SetWindowLong(button1, GWL_STYLE, (unsigned int)(b1style | (WS_VISIBLE)));
+
+        ShowWindow(mainWnd, 1);
+        UpdateWindow(mainWnd);
+    }
+    break;
     case WM_COMMAND:
     {
         int wmId = LOWORD(wParam);
@@ -78,16 +94,28 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
             break;
         case BTN_MAIN_CROSS:
         {
-            chooseCrossesWnd = CreateWindowW(szChooseCrossesWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-                CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, mainWnd, nullptr, hInst, nullptr);
+            int b0style = GetWindowLong(button0, GWL_STYLE);
+            int b1style = GetWindowLong(button1, GWL_STYLE);
+            SetWindowLong(button0, GWL_STYLE, (unsigned int)(b0style & ~(WS_VISIBLE)));
+            SetWindowLong(button1, GWL_STYLE, (unsigned int)(b1style & ~(WS_VISIBLE)));
 
-            if (!chooseCrossesWnd)
-            {
-                return FALSE;
+            if (chooseCrossesWnd == NULL) {
+                chooseCrossesWnd = CreateWindowW(szChooseCrossesWindowClass, szTitle, WS_OVERLAPPED | WS_CLIPCHILDREN,
+                    0, 0, CW_USEDEFAULT, CW_USEDEFAULT, mainWnd, nullptr, hInst, nullptr);
+                SetParent(chooseCrossesWnd, hWnd);
+                int style = GetWindowLong(chooseCrossesWnd, GWL_STYLE); //gets current style
+                SetWindowLong(chooseCrossesWnd, GWL_STYLE, (unsigned int)(style & ~(WS_CAPTION | WS_SIZEBOX)));
+                SetWindowPos(chooseCrossesWnd, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+                if (!chooseCrossesWnd)
+                {
+                    return FALSE;
+                }
             }
+            
 
             ShowWindow(chooseCrossesWnd, 1);
             UpdateWindow(chooseCrossesWnd);
+            
 
             return TRUE;
         }
@@ -106,32 +134,7 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
     break;
     case WM_PAINT:
     {
-
-        PAINTSTRUCT ps; //экземпляр структуры рисования
-        HDC hdc = BeginPaint(hWnd, &ps); //начали рисование
-        SelectObject(hdc, hBrush);
-
-        SetBkMode(hdc, TRANSPARENT);
-        SetBkColor(hdc, color);
-        Rectangle(hdc, 50, 160, 800, 600);
-
-        SetTextColor(hdc, RGB(200, 100, 165));
-        SelectObject(hdc, textFont);
-        TCHAR MainText[] = L"Добро пожаловать в игру CrossByKitya!";
-        TCHAR MainText1[] = L"Что бы начать игру нажмите на кнопку КРОССВОРДЫ.";
-        TCHAR MainText2[] = L"Если вы хотите покинуть игру, нажмите на кнопку ВЫХОД.";
-        TextOut(hdc, 60, 170, MainText, _ARRAYSIZE(MainText));
-        TextOut(hdc, 60, 210, MainText1, _ARRAYSIZE(MainText1));
-        TextOut(hdc, 60, 250, MainText2, _ARRAYSIZE(MainText2));
-
-        TCHAR titleText[] = L"CrossByKitya";
-
-        SetTextColor(hdc, RGB(255, 170, 220));
-        SetBkColor(hdc, RGB(255, 255, 255));
-        SelectObject(hdc, titleFont);
-        TextOut(hdc, 530, 10, titleText, _ARRAYSIZE(titleText));
-
-        EndPaint(hWnd, &ps); //закончили рисование
+        RepaintMe(hWnd);
         break;
     }
     break;
@@ -142,5 +145,32 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
         return DefWindowProc(hWnd, message, wParam, lParam);
     }
     return 0;
+}
+void RepaintMe(HWND hWnd) {
+    PAINTSTRUCT ps; //экземпляр структуры рисования
+    HDC hdc = BeginPaint(hWnd, &ps); //начали рисование
+    SelectObject(hdc, hBrush);
+
+    SetBkMode(hdc, TRANSPARENT);
+    SetBkColor(hdc, color);
+    Rectangle(hdc, 50, 160, 800, 600);
+
+    SetTextColor(hdc, RGB(200, 100, 165));
+    SelectObject(hdc, textFont);
+    TCHAR MainText[] = L"Добро пожаловать в игру CrossByKitya!";
+    TCHAR MainText1[] = L"Что бы начать игру нажмите на кнопку КРОССВОРДЫ.";
+    TCHAR MainText2[] = L"Если вы хотите покинуть игру, нажмите на кнопку ВЫХОД.";
+    TextOut(hdc, 60, 170, MainText, _ARRAYSIZE(MainText));
+    TextOut(hdc, 60, 210, MainText1, _ARRAYSIZE(MainText1));
+    TextOut(hdc, 60, 250, MainText2, _ARRAYSIZE(MainText2));
+
+    TCHAR titleText[] = L"CrossByKitya";
+
+    SetTextColor(hdc, RGB(255, 170, 220));
+    SetBkColor(hdc, RGB(255, 255, 255));
+    SelectObject(hdc, titleFont);
+    TextOut(hdc, 530, 10, titleText, _ARRAYSIZE(titleText));
+
+    EndPaint(hWnd, &ps); //закончили рисование
 }
 

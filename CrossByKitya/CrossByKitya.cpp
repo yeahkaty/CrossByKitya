@@ -95,7 +95,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     RegisterClassExW(&mainWcex);
 
     chooseCrossesWcex.cbSize = sizeof(WNDCLASSEX);
-    chooseCrossesWcex.style = CS_HREDRAW | CS_VREDRAW;
+    chooseCrossesWcex.style = 0;
     chooseCrossesWcex.lpfnWndProc = ChooseCrossesWndProc;
     chooseCrossesWcex.cbClsExtra = 0;
     chooseCrossesWcex.cbWndExtra = 0;
@@ -103,7 +103,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     chooseCrossesWcex.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_CROSSBYKITYA));
     chooseCrossesWcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
     chooseCrossesWcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
-    chooseCrossesWcex.lpszMenuName = MAKEINTRESOURCEW(IDC_CROSSBYKITYA);
+    chooseCrossesWcex.lpszMenuName = 0;
     chooseCrossesWcex.lpszClassName = szChooseCrossesWindowClass;
     chooseCrossesWcex.hIconSm = LoadIcon(chooseCrossesWcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
     return RegisterClassExW(&chooseCrossesWcex);
