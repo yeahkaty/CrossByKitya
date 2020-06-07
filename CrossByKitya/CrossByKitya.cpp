@@ -1,8 +1,14 @@
 ﻿// CrossByKitya.cpp : Defines the entry point for the application.
 //
-
+#include "Result.h"
+#include "Word.h"
+#include "Crossword.h"
+#include "Place.h"
+#include "TxtConvertor.h"
 #include "framework.h"
+#include <vector>
 #include "CrossByKitya.h"
+using namespace std;
 
 #define MAX_LOADSTRING 100
 #define BTN_MAIN_CROSS  200
@@ -30,12 +36,29 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
+
+
+
+    Result r1 = Result("kolya", "11:02", "102", "29.07");
+    Result r2 = Result("igor", "11:00", "108", "28.07");
+    Result r3 = Result("olga", "10:40", "110", "29.07");
+    vector <Result> probnik;
+    probnik.push_back(r1);
+    probnik.push_back(r2);
+    probnik.push_back(r3);
+
+    TxtConvertor proba;
+    proba.WriteResults(probnik);
+
+
     // TODO: Place code here.
 
     // Initialize global strings
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
     LoadStringW(hInstance, IDC_CROSSBYKITYA, szWindowClass, MAX_LOADSTRING);
     MyRegisterClass(hInstance);
+
+
 
     // Perform application initialization:
     if (!InitInstance(hInstance, nCmdShow))
@@ -135,11 +158,11 @@ HFONT textFont;
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+
     switch (message)
     {
     case WM_CREATE:
     {
-
         bigButtonFont = CreateFont(50, 22, 0, 0, FW_DONTCARE, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_OUTLINE_PRECIS,
             CLIP_DEFAULT_PRECIS, ANTIALIASED_QUALITY, VARIABLE_PITCH, TEXT("Calibri"));
         HWND button0 = CreateWindow(TEXT("BUTTON"), TEXT("Кроссворды"), WS_VISIBLE | WS_CHILD, 850, 160, 500, 100, hWnd, (HMENU)BTN_MAIN_CROSS, hInst, NULL);
@@ -152,6 +175,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         textFont = CreateFont(30, 14, 0, 0, FW_DONTCARE, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_OUTLINE_PRECIS,
             CLIP_DEFAULT_PRECIS, ANTIALIASED_QUALITY, VARIABLE_PITCH, TEXT("Calibri"));
 
+        
         /*
         HFONT CreateFont(
             int nHeight,               // высота шрифта
