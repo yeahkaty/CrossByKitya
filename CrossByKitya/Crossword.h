@@ -16,6 +16,7 @@ private:
 	string description;
 	string author;
 	map <Word, Place> wordMap;
+public:
 	Crossword (int s_v, int s_h, string n, int l, string d, string a, map<Word, Place> w)
 	{
 		size_vertical = s_v;
@@ -25,6 +26,10 @@ private:
 		description = d;
 		author = a;
 		wordMap = w;
+	};
+	Crossword()
+	{
+
 	};
 	int getSize_vertical()
 	{
@@ -50,9 +55,9 @@ private:
 	{
 		return author;
 	}
-	map <Word, Place> getMap()
+	map <Word, Place>* getMap()
 	{
-		return wordMap;
+		return  &wordMap;
 	}
 	void setSize_vertical(int size_vertical)
 	{

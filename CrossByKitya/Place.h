@@ -8,6 +8,7 @@ class Place
 	bool isHorizontal;
 	int xPlace;
 	int yPlace;
+public:
 	Place (bool g, int x, int y)
 	{
 		isHorizontal = g;

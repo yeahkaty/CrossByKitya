@@ -6,9 +6,10 @@ using namespace std;
 class Word
 {
 private:
-	int length;
 	string description;
 	string word;
+public:
+	int length;
 	Word (int l, string d, string w)
 	{
 		length = l;
@@ -39,6 +40,12 @@ private:
 	{
 		this->word = word;
 	}
-
+	bool operator< (const Word& word) const
+	{
+		if (word.length < this->length)
+			return true;
+		else
+			return false;
+	}
 };
 #endif

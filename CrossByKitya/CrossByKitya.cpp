@@ -5,8 +5,8 @@
 #include "Crossword.h"
 #include "Place.h"
 #include "TxtConvertor.h"
-#include "framework.h"
 #include <vector>
+#include "framework.h"
 #include "CrossByKitya.h"
 using namespace std;
 
@@ -49,6 +49,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     TxtConvertor proba;
     proba.WriteResults(probnik);
+    vector<Result>p1;
+    p1 = proba.ReadResults();
+
+    vector<Crossword> proba2;
+    proba2 = proba.ReadCrosswords();
 
 
     // TODO: Place code here.
