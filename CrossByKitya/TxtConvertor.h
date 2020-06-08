@@ -38,21 +38,21 @@ private:
 public:
 	void WriteResults(vector<Result> results)
 	{
-		resultsPath = "E:\\универ\\спро\\курсач\\results.txt";
-		ofstream out;          // поток для записи
-		out.open(resultsPath);
+		//resultsPath = "E:\\универ\\спро\\курсач\\results.txt";
+		ofstream out("results.txt");          // поток для записи
+		
+		//out.open(resultsPath);
 		for (int i = 0; i < results.size(); i++)
 		{
 			out << results[i].getName() << ", " << results[i].getData() << ", " << results[i].getScores() << ", " << results[i].getTime() << endl;
-
 		}
 		out.close();
 	}
 	vector<Result> ReadResults()
 	{
 		vector<Result> Reads;
-		resultsPath = "E:\\универ\\спро\\курсач\\results.txt";
-		ifstream f(resultsPath);
+		//resultsPath = "E:\\универ\\спро\\курсач\\results.txt";
+		ifstream f("results.txt");
 		string line;
 		while (getline(f, line))
 		{
@@ -65,9 +65,9 @@ public:
 	vector<Crossword> ReadCrosswords()
 	{
 
-		crossesPath = "E:\\универ\\спро\\курсач\\crosses.txt";
+		//crossesPath = "E:\\универ\\спро\\курсач\\crosses.txt";
 		vector<Crossword>result;
-		ifstream f(crossesPath);
+		ifstream f("crosses.txt");
 		string line1;
 		string line2;
 		bool IsFirstRow = true;

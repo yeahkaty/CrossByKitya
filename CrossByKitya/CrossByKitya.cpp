@@ -31,6 +31,13 @@ WCHAR szChooseCrossesWindowClass[MAX_LOADSTRING];
 
 HWND mainWnd;
 
+
+
+
+
+
+
+
 // Forward declarations of functions included in this code module:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
@@ -53,6 +60,16 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     
     MyRegisterClass(hInstance);
 
+   // Result proba = Result("ivqan", "12:01", "109", "01.07");
+    //vector<Result> probnik;
+    //probnik.push_back(proba);
+   // TxtConvertor pr;
+   // pr.WriteResults(probnik);
+
+  // probnik = pr.ReadResults();
+  // TxtConvertor pr1;
+ //  vector<Crossword> probnik1;
+ //  probnik1 = pr.ReadCrosswords();
 
 
     // Perform application initialization:
