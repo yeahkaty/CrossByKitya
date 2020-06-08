@@ -29,6 +29,8 @@ extern HFONT bigButtonFont;
 extern HFONT titleFont;
 extern HBRUSH hBrush;
 extern HFONT textFont;
+extern HPEN whitePen;
+extern HPEN blackPen;
 
 
 #define BackToMainMessage WM_USER+1

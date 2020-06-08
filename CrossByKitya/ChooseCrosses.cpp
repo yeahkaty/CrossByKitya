@@ -22,6 +22,8 @@ LRESULT CALLBACK    ChooseCrossesWndProc(HWND hWnd, UINT message, WPARAM wParam,
             int chooseStyle = GetWindowLong(hWnd, GWL_STYLE);
             SetWindowLong(hWnd, GWL_STYLE, (unsigned int)(chooseStyle & ~(WS_VISIBLE)));
             SendMessage(mainWnd, BackToMainMessage, 0, 0);
+            RedrawWindow(mainWnd, NULL, NULL, RDW_INTERNALPAINT|RDW_INVALIDATE| RDW_UPDATENOW);
+
 
         }
         break;
@@ -34,6 +36,17 @@ LRESULT CALLBACK    ChooseCrossesWndProc(HWND hWnd, UINT message, WPARAM wParam,
     {
         PAINTSTRUCT ps; //экземпляр структуры рисования
         HDC hdc = BeginPaint(chooseCrossesWnd, &ps); //начали рисование
+            // Erase BackGround
+        SetBkColor(hdc, RGB(255, 255, 255));
+        SelectObject(hdc, whitePen);
+        RECT rect;
+        GetWindowRect(hWnd, &rect);
+        LONG width = rect.right - rect.left;
+        LONG height = rect.bottom - rect.top;
+        Rectangle(hdc, 0, 0, width, height);
+        // End of erase
+        SelectObject(hdc, blackPen);
+
         SelectObject(hdc, hBrush);
 
         SetBkMode(hdc, OPAQUE);

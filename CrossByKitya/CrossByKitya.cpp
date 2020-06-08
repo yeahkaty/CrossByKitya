@@ -14,6 +14,8 @@ HFONT textFont = CreateFont(30, 14, 0, 0, FW_DONTCARE, FALSE, FALSE, FALSE, DEFA
     CLIP_DEFAULT_PRECIS, ANTIALIASED_QUALITY, VARIABLE_PITCH, TEXT("Calibri"));
 COLORREF color = RGB(250, 240, 250);
 HBRUSH hBrush = CreateSolidBrush(color);
+HPEN whitePen = CreatePen(PS_SOLID, 1, RGB(255, 255, 255));
+HPEN blackPen = CreatePen(PS_SOLID, 1, RGB(0, 0, 0));
 HINSTANCE hInst;                                // current instance
 WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR szMainWindowClass[MAX_LOADSTRING];

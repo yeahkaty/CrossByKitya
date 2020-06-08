@@ -75,7 +75,7 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
         int b1style = GetWindowLong(button1, GWL_STYLE);
         SetWindowLong(button0, GWL_STYLE, (unsigned int)(b0style | (WS_VISIBLE)));
         SetWindowLong(button1, GWL_STYLE, (unsigned int)(b1style | (WS_VISIBLE)));
-
+        RepaintMe(hWnd);
         ShowWindow(mainWnd, 1);
         UpdateWindow(mainWnd);
     }
@@ -149,9 +149,20 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
 void RepaintMe(HWND hWnd) {
     PAINTSTRUCT ps; //экземпляр структуры рисования
     HDC hdc = BeginPaint(hWnd, &ps); //начали рисование
-    SelectObject(hdc, hBrush);
+    
+    // Erase BackGround
+    SetBkColor(hdc, RGB(255, 255, 255));
+    SelectObject(hdc, whitePen);
+    RECT rect;
+    GetWindowRect(hWnd, &rect);
+    LONG width = rect.right - rect.left;
+    LONG height = rect.bottom - rect.top;
+    Rectangle(hdc, 0, 0, width, height);
+    // End of erase
+    SelectObject(hdc, blackPen);
 
-    SetBkMode(hdc, TRANSPARENT);
+    SelectObject(hdc, hBrush);
+    SetBkMode(hdc, OPAQUE);
     SetBkColor(hdc, color);
     Rectangle(hdc, 50, 160, 800, 600);
 
