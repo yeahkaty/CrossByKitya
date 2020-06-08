@@ -1,9 +1,17 @@
 ﻿// CrossByKitya.cpp : Defines the entry point for the application.
 //
+#include "Result.h"
+#include "Word.h"
+#include "Crossword.h"
+#include "Place.h"
+#include "TxtConvertor.h"
+#include <vector>
+#include "framework.h"
 
 #include "MainWindow.h"
 #include "ChooseCrosses.h"
 #include "CrossByKitya.h"
+using namespace std;
 
 // Global variables
 HFONT bigButtonFont = CreateFont(50, 22, 0, 0, FW_DONTCARE, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_OUTLINE_PRECIS,
@@ -44,6 +52,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     
     MyRegisterClass(hInstance);
+
+
 
     // Perform application initialization:
     if (!InitInstance(hInstance, nCmdShow))
