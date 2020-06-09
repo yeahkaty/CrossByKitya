@@ -10,6 +10,7 @@
 #include <iostream>
 #include <map>
 #include <vector>
+#include <algorithm>
 #include <fstream>
 using namespace std;
 
@@ -36,6 +37,12 @@ private:
 		return result;
 	}
 public:
+	vector<Result> SortResults(vector<Result> results)
+	{
+
+		sort(results.begin(), results.end(), [](Result a, Result b) { return a.getScores() > b.getScores(); });
+		return (results);
+	}
 	void WriteResults(vector<Result> results)
 	{
 		//resultsPath = "E:\\универ\\спро\\курсач\\results.txt";

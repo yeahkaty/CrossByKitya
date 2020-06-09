@@ -8,9 +8,10 @@ class Result
 private:
 	string name;
 	string time;
-	string scores;
+	
 	string data;
 public:
+	string scores;
 	Result(string n, string t, string s, string d)
 	{
 		name = n;
