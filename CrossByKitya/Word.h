@@ -16,6 +16,10 @@ public:
 		description = d;
 		word = w;
 	};
+	Word()
+	{
+
+	};
 	int getLength()
 	{
 		return length;
@@ -42,7 +46,7 @@ public:
 	}
 	bool operator< (const Word& word) const
 	{
-		if (word.length < this->length)
+		if (word.word < this->word)
 			return true;
 		else
 			return false;

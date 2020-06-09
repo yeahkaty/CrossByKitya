@@ -82,8 +82,7 @@ public:
 		bool IsFirstRow = true;
 		Crossword CrosswordNow = Crossword();
 		map<Word, Place>mapNow;
-		
-		
+				
 		while (getline(f, line1))
 		{
 			if (line1[0] == '$')
@@ -115,7 +114,9 @@ public:
 				Word wordNow = Word(stoi(wordParams[0]), wordParams[1], wordParams[2]);
 				vector<string> placeParams = SplitBy(line2, ',');
 				Place placeNow = Place(stoi(placeParams[0]), stoi(placeParams[1]), stoi(placeParams[2]));
-				mapNow.insert(pair<Word, Place>(wordNow, placeNow));
+				mapNow.emplace(pair<Word, Place>(wordNow, placeNow));
+
+				//mapNow[wordNow] = placeNow;
 			}
 		}
 		CrosswordNow.setMap(mapNow);

@@ -15,6 +15,10 @@ public:
 		xPlace = x;
 		yPlace = y;
 	};
+	Place()
+	{
+
+	};
 	bool getIsHorizontal()
 	{
 		return isHorizontal;

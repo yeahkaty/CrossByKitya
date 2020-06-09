@@ -61,7 +61,7 @@ LRESULT CALLBACK    ChooseCrossesWndProc(HWND hWnd, UINT message, WPARAM wParam,
                 }
             }
 
-            SendMessage(mainWnd, Cross1Message, 0, 0);
+            SendMessage(crossWnd, Cross1Message, 0, 0);
             ShowWindow(crossWnd, 1);
             UpdateWindow(crossWnd);
 
@@ -85,7 +85,7 @@ LRESULT CALLBACK    ChooseCrossesWndProc(HWND hWnd, UINT message, WPARAM wParam,
                 }
             }
 
-            SendMessage(mainWnd, Cross2Message, 0, 0);
+            SendMessage(crossWnd, Cross2Message, 0, 0);
             ShowWindow(crossWnd, 1);
             UpdateWindow(crossWnd);
         }
@@ -108,7 +108,7 @@ LRESULT CALLBACK    ChooseCrossesWndProc(HWND hWnd, UINT message, WPARAM wParam,
                 }
             }
 
-            SendMessage(mainWnd, Cross3Message, 0, 0);
+            SendMessage(crossWnd, Cross3Message, 0, 0);
             ShowWindow(crossWnd, 1);
             UpdateWindow(crossWnd);
         }
