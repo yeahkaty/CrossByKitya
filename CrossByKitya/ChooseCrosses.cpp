@@ -10,6 +10,8 @@ HWND firstCrossBtn;
 HWND secondCrossBtn;
 HWND thirdCrossBtn;
 
+HWND crossWnd;
+
 LRESULT CALLBACK    ChooseCrossesWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
     switch (message)
     {
@@ -45,24 +47,70 @@ LRESULT CALLBACK    ChooseCrossesWndProc(HWND hWnd, UINT message, WPARAM wParam,
         {
             int chooseStyle = GetWindowLong(hWnd, GWL_STYLE);
             SetWindowLong(hWnd, GWL_STYLE, (unsigned int)(chooseStyle & ~(WS_VISIBLE)));
-            SendMessage(mainWnd, BackToMainMessage, 0, 0);
-            RedrawWindow(mainWnd, NULL, NULL, RDW_INTERNALPAINT | RDW_INVALIDATE | RDW_UPDATENOW);
+
+            if (crossWnd == NULL) {
+                crossWnd = CreateWindowW(szCrossWindowClass, szTitle, WS_OVERLAPPED | WS_CLIPCHILDREN,
+                    0, 0, CW_USEDEFAULT, CW_USEDEFAULT, mainWnd, nullptr, hInst, nullptr);
+                SetParent(crossWnd, mainWnd);
+                int style = GetWindowLong(crossWnd, GWL_STYLE); //gets current style
+                SetWindowLong(crossWnd, GWL_STYLE, (unsigned int)(style & ~(WS_CAPTION | WS_SIZEBOX)));
+                SetWindowPos(crossWnd, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+                if (!crossWnd)
+                {
+                    return FALSE;
+                }
+            }
+
+            SendMessage(mainWnd, Cross1Message, 0, 0);
+            ShowWindow(crossWnd, 1);
+            UpdateWindow(crossWnd);
+
         }
         break;
         case BTN_SECONDCROSS:
         {
             int chooseStyle = GetWindowLong(hWnd, GWL_STYLE);
             SetWindowLong(hWnd, GWL_STYLE, (unsigned int)(chooseStyle & ~(WS_VISIBLE)));
-            SendMessage(mainWnd, BackToMainMessage, 0, 0);
-            RedrawWindow(mainWnd, NULL, NULL, RDW_INTERNALPAINT | RDW_INVALIDATE | RDW_UPDATENOW);
+
+            if (crossWnd == NULL) {
+                crossWnd = CreateWindowW(szCrossWindowClass, szTitle, WS_OVERLAPPED | WS_CLIPCHILDREN,
+                    0, 0, CW_USEDEFAULT, CW_USEDEFAULT, mainWnd, nullptr, hInst, nullptr);
+                SetParent(crossWnd, mainWnd);
+                int style = GetWindowLong(crossWnd, GWL_STYLE); //gets current style
+                SetWindowLong(crossWnd, GWL_STYLE, (unsigned int)(style & ~(WS_CAPTION | WS_SIZEBOX)));
+                SetWindowPos(crossWnd, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+                if (!crossWnd)
+                {
+                    return FALSE;
+                }
+            }
+
+            SendMessage(mainWnd, Cross2Message, 0, 0);
+            ShowWindow(crossWnd, 1);
+            UpdateWindow(crossWnd);
         }
         break;
         case BTN_THIRDCROSS:
         {
             int chooseStyle = GetWindowLong(hWnd, GWL_STYLE);
             SetWindowLong(hWnd, GWL_STYLE, (unsigned int)(chooseStyle & ~(WS_VISIBLE)));
-            SendMessage(mainWnd, BackToMainMessage, 0, 0);
-            RedrawWindow(mainWnd, NULL, NULL, RDW_INTERNALPAINT | RDW_INVALIDATE | RDW_UPDATENOW);
+
+            if (crossWnd == NULL) {
+                crossWnd = CreateWindowW(szCrossWindowClass, szTitle, WS_OVERLAPPED | WS_CLIPCHILDREN,
+                    0, 0, CW_USEDEFAULT, CW_USEDEFAULT, mainWnd, nullptr, hInst, nullptr);
+                SetParent(crossWnd, mainWnd);
+                int style = GetWindowLong(crossWnd, GWL_STYLE); //gets current style
+                SetWindowLong(crossWnd, GWL_STYLE, (unsigned int)(style & ~(WS_CAPTION | WS_SIZEBOX)));
+                SetWindowPos(crossWnd, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+                if (!crossWnd)
+                {
+                    return FALSE;
+                }
+            }
+
+            SendMessage(mainWnd, Cross3Message, 0, 0);
+            ShowWindow(crossWnd, 1);
+            UpdateWindow(crossWnd);
         }
         break;
         default:
@@ -72,6 +120,7 @@ LRESULT CALLBACK    ChooseCrossesWndProc(HWND hWnd, UINT message, WPARAM wParam,
     break;
     case WM_PAINT:
     {
+
         PAINTSTRUCT ps; //экземпляр структуры рисования
         HDC hdc = BeginPaint(chooseCrossesWnd, &ps); //начали рисование
 

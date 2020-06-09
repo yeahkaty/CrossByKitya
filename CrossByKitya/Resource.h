@@ -8,6 +8,7 @@
 #define IDM_ABOUT                       104
 #define IDS_ChooseCrossesClass          104
 #define IDM_EXIT                        105
+#define IDS_CrossClass                  105
 #define IDI_CROSSBYKITYA                107
 #define IDI_SMALL                       108
 #define IDC_CROSSBYKITYA                109

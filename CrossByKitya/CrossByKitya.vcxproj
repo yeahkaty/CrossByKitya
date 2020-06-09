@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClInclude Include="ChooseCrosses.h" />
     <ClInclude Include="CrossByKitya.h" />
+    <ClInclude Include="CrossWindow.h" />
     <ClInclude Include="Crossword.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="MainWindow.h" />
@@ -162,6 +163,7 @@
   <ItemGroup>
     <ClCompile Include="ChooseCrosses.cpp" />
     <ClCompile Include="CrossByKitya.cpp" />
+    <ClCompile Include="CrossWindow.cpp" />
     <ClCompile Include="Crossword.cpp" />
     <ClCompile Include="Place.cpp" />
     <ClCompile Include="Result.cpp" />

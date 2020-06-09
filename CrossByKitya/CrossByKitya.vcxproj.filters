@@ -48,6 +48,9 @@
     <ClInclude Include="ChooseCrosses.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CrossWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CrossByKitya.cpp">
@@ -72,6 +75,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ChooseCrosses.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CrossWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
