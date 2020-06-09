@@ -55,7 +55,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     txtParser = TxtConvertor();
     crosswords = txtParser.ReadCrosswords();
-    results = txtParser.ReadResults();
+    results = txtParser.SortResults(txtParser.ReadResults());
 
     // Initialize global strings
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
