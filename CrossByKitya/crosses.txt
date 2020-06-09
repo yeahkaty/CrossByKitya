@@ -1,3 +1,16 @@
+$9,8,1st,1,This crossword of the 1st difficulty level was developed for high school students in 2018. Its subject is medicine.,Ivan
+8,a place where people stay when they are ill or injured and need a lot of care,hospital
+1,0,1
+7,a doctor whose job is to perform medical operations,surgeon
+0,2,1
+4,a limited range or amount of food that someone eats to improve their health,diet
+0,4,0
+3,an infectious disease which is like a bad cold but more serious,flu
+0,7,0
+5,someone who is trained to look after ill or injured people, usually in a hospital,nurse
+1,2,7
+4,an injury that you get when something hot touches your skin,burn
+0,4,5
 $13,15,2st,2,This crossword of the 2nd difficulty level was developed for high school students in 2018. His subjects are shops.,Igor
 4,... shop is a place where people buy things they give as presents.,gift
 1,9,0
@@ -46,16 +59,3 @@ $13,14,3d,3,This crossword of the 3rd difficulty level was developed for high sc
 1,7,8
 5,one of the coloured parts around the centre of a flower,petal
 0,7,5
-$9,8,1st,1,This crossword of the 1st difficulty level was developed for high school students in 2018. Its subject is medicine.,Ivan
-8,a place where people stay when they are ill or injured and need a lot of care,hospital
-1,0,1
-7,a doctor whose job is to perform medical operations,surgeon
-0,2,1
-4,a limited range or amount of food that someone eats to improve their health,diet
-0,4,0
-3,an infectious disease which is like a bad cold but more serious,flu
-0,7,0
-5,someone who is trained to look after ill or injured people, usually in a hospital,nurse
-1,2,7
-4,an injury that you get when something hot touches your skin,burn
-0,4,5

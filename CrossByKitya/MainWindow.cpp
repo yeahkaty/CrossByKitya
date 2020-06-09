@@ -43,8 +43,8 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
     {
 
         
-        button0 = CreateWindow(TEXT("BUTTON"), TEXT("Кроссворды"), WS_VISIBLE | WS_CHILD, 850, 160, 500, 100, hWnd, (HMENU)BTN_MAIN_CROSS, hInst, NULL);
-        button1 = CreateWindow(TEXT("BUTTON"), TEXT("Выход"), WS_VISIBLE | WS_CHILD, 850, 300, 500, 100, hWnd, (HMENU)BTN_MAIN_EXIT, hInst, NULL);
+        button0 = CreateWindow(TEXT("BUTTON"), TEXT("Crossword"), WS_VISIBLE | WS_CHILD, 850, 160, 500, 100, hWnd, (HMENU)BTN_MAIN_CROSS, hInst, NULL);
+        button1 = CreateWindow(TEXT("BUTTON"), TEXT("Exit"), WS_VISIBLE | WS_CHILD, 850, 300, 500, 100, hWnd, (HMENU)BTN_MAIN_EXIT, hInst, NULL);
         SendMessage(button0, WM_SETFONT, (WPARAM)bigButtonFont, TRUE);
         SendMessage(button1, WM_SETFONT, (WPARAM)bigButtonFont, TRUE);
 
@@ -168,9 +168,9 @@ void RepaintMe(HWND hWnd) {
 
     SetTextColor(hdc, RGB(200, 100, 165));
     SelectObject(hdc, textFont);
-    TCHAR MainText[] = L"Добро пожаловать в игру CrossByKitya!";
-    TCHAR MainText1[] = L"Что бы начать игру нажмите на кнопку КРОССВОРДЫ.";
-    TCHAR MainText2[] = L"Если вы хотите покинуть игру, нажмите на кнопку ВЫХОД.";
+    TCHAR MainText[] = L"Welcome in the game CrossByKitya!";
+    TCHAR MainText1[] = L"To begin the game press the button CROSSWORDS.";
+    TCHAR MainText2[] = L"If you want to leave the game, press the button EXIT.";
     TextOut(hdc, 60, 170, MainText, _ARRAYSIZE(MainText));
     TextOut(hdc, 60, 210, MainText1, _ARRAYSIZE(MainText1));
     TextOut(hdc, 60, 250, MainText2, _ARRAYSIZE(MainText2));
