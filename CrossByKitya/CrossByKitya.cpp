@@ -1,15 +1,10 @@
 ﻿// CrossByKitya.cpp : Defines the entry point for the application.
 //
-#include "Result.h"
-#include "Word.h"
-#include "Crossword.h"
-#include "Place.h"
-#include "TxtConvertor.h"
-#include <vector>
 #include "framework.h"
 
 #include "MainWindow.h"
 #include "ChooseCrosses.h"
+#include "CrossWindow.h"
 #include "CrossByKitya.h"
 using namespace std;
 
@@ -28,6 +23,12 @@ HINSTANCE hInst;                                // current instance
 WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR szMainWindowClass[MAX_LOADSTRING];
 WCHAR szChooseCrossesWindowClass[MAX_LOADSTRING];
+WCHAR szCrossWindowClass[MAX_LOADSTRING];
+
+
+TxtConvertor txtParser;
+vector<Crossword> crosswords;
+vector<Result> results;
 
 HWND mainWnd;
 
@@ -52,10 +53,15 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     // TODO: Place code here.
 
+    txtParser = TxtConvertor();
+    crosswords = txtParser.ReadCrosswords();
+    results = txtParser.ReadResults();
+
     // Initialize global strings
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
     LoadStringW(hInstance, IDC_CROSSBYKITYA, szMainWindowClass, MAX_LOADSTRING);
     LoadStringW(hInstance, IDS_ChooseCrossesClass, szChooseCrossesWindowClass, MAX_LOADSTRING);
+    LoadStringW(hInstance, IDS_CrossClass, szCrossWindowClass, MAX_LOADSTRING);
 
     
     MyRegisterClass(hInstance);
@@ -108,6 +114,8 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 {
     WNDCLASSEXW mainWcex;
     WNDCLASSEXW chooseCrossesWcex;
+    WNDCLASSEXW crossWcex;
+
 
     mainWcex.cbSize = sizeof(WNDCLASSEX);
 
@@ -137,8 +145,21 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     chooseCrossesWcex.lpszMenuName = 0;
     chooseCrossesWcex.lpszClassName = szChooseCrossesWindowClass;
     chooseCrossesWcex.hIconSm = LoadIcon(chooseCrossesWcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
-    return RegisterClassExW(&chooseCrossesWcex);
+    RegisterClassExW(&chooseCrossesWcex);
 
+    crossWcex.cbSize = sizeof(WNDCLASSEX);
+    crossWcex.style = 0;
+    crossWcex.lpfnWndProc = CrossWndProc;
+    crossWcex.cbClsExtra = 0;
+    crossWcex.cbWndExtra = 0;
+    crossWcex.hInstance = hInstance;
+    crossWcex.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_CROSSBYKITYA));
+    crossWcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
+    crossWcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+    crossWcex.lpszMenuName = 0;
+    crossWcex.lpszClassName = szCrossWindowClass;
+    crossWcex.hIconSm = LoadIcon(crossWcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
+    return RegisterClassExW(&crossWcex);
 
 }
 

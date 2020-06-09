@@ -61,10 +61,12 @@ public:
 		//resultsPath = "E:\\универ\\спро\\курсач\\results.txt";
 		ifstream f("results.txt");
 		string line;
-		while (getline(f, line))
+		int c = 0;
+		while (getline(f, line) &&  c<9)
 		{
 			vector<string> words = SplitBy(line, ',');
 			Reads.push_back(Result(words[0], words[1], words[2], words[3]));
+			c++;
 		}
 
 		return (Reads);
@@ -117,7 +119,9 @@ public:
 			}
 		}
 		CrosswordNow.setMap(mapNow);
-		result.push_back(CrosswordNow);
+		if (CrosswordNow.getSize_horizontal() != 0) {
+			result.push_back(CrosswordNow);
+		}
 		
 		return (result);
 	}
