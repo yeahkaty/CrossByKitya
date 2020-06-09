@@ -1,11 +1,5 @@
 ﻿// CrossByKitya.cpp : Defines the entry point for the application.
 //
-#include "Result.h"
-#include "Word.h"
-#include "Crossword.h"
-#include "Place.h"
-#include "TxtConvertor.h"
-#include <vector>
 #include "framework.h"
 
 #include "MainWindow.h"
@@ -29,6 +23,10 @@ WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR szMainWindowClass[MAX_LOADSTRING];
 WCHAR szChooseCrossesWindowClass[MAX_LOADSTRING];
 
+TxtConvertor txtParser;
+vector<Crossword> crosswords;
+vector<Result> results;
+
 HWND mainWnd;
 
 // Forward declarations of functions included in this code module:
@@ -44,6 +42,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(lpCmdLine);
 
     // TODO: Place code here.
+
+    txtParser = TxtConvertor();
+    crosswords = txtParser.ReadCrosswords();
+    results = txtParser.ReadResults();
 
     // Initialize global strings
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);

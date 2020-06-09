@@ -29,7 +29,9 @@ public:
 	};
 	Crossword()
 	{
-
+		size_vertical = 0;
+		size_horizontal = 0;
+		level = 0;
 	};
 	int getSize_vertical()
 	{

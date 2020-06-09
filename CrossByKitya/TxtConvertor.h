@@ -38,7 +38,7 @@ private:
 public:
 	void WriteResults(vector<Result> results)
 	{
-		resultsPath = "E:\\универ\\спро\\курсач\\results.txt";
+		resultsPath = "C:\\Users\\Pinky\\source\\repos\\CrossByKitya\\x64\\Debug\\results.txt";
 		ofstream out;          // поток для записи
 		out.open(resultsPath);
 		for (int i = 0; i < results.size(); i++)
@@ -51,21 +51,22 @@ public:
 	vector<Result> ReadResults()
 	{
 		vector<Result> Reads;
-		resultsPath = "E:\\универ\\спро\\курсач\\results.txt";
+		resultsPath = "C:\\Users\\Pinky\\source\\repos\\CrossByKitya\\x64\\Debug\\results.txt";
 		ifstream f(resultsPath);
 		string line;
-		while (getline(f, line))
+		int c = 0;
+		while (getline(f, line) &&  c<9)
 		{
 			vector<string> words = SplitBy(line, ',');
 			Reads.push_back(Result(words[0], words[1], words[2], words[3]));
+			c++;
 		}
 
 		return (Reads);
 	}
 	vector<Crossword> ReadCrosswords()
 	{
-
-		crossesPath = "E:\\универ\\спро\\курсач\\crosses.txt";
+		crossesPath = "C:\\Users\\Pinky\\source\\repos\\CrossByKitya\\x64\\Debug\\crosses.txt";
 		vector<Crossword>result;
 		ifstream f(crossesPath);
 		string line1;
@@ -110,7 +111,9 @@ public:
 			}
 		}
 		CrosswordNow.setMap(mapNow);
-		result.push_back(CrosswordNow);
+		if (CrosswordNow.getSize_horizontal() != 0) {
+			result.push_back(CrosswordNow);
+		}
 		
 		return (result);
 	}
