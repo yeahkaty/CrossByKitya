@@ -12,10 +12,13 @@ public:
         idsToGreen = greenIds;
         idsToRed = redIds;
     }
+    CrossCheckResult() {
+
+    }
 };
 
 
-void DrawCrossword(int num, HWND hWnd);
+void DrawCrossword(HWND hWnd);
 CrossCheckResult checkCross(Crossword cross);
 //#define testTextBox 500
 HWND backToChooseBtn;
@@ -23,6 +26,7 @@ int crosswordFieldWidth;
 int crosswordFieldHeight;
 int descStartX;
 int descStartY;
+CrossCheckResult checkRes;
 map<int, HWND> crossOnField;
 Crossword cross;
 //HWND TextBox;
@@ -40,34 +44,68 @@ LRESULT CALLBACK CrossWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPa
         //TextBox = CreateWindow(TEXT("Edit"), TEXT(""), WS_VISIBLE | WS_CHILD | WS_BORDER, 200, 200, 200, 200, hWnd, (HMENU)testTextBox, hInst, NULL);
     }
     break;
-    /*case WM_CTLCOLOREDIT: {
-        SetTextColor(hdcEdit, RGB(255, 255, 255));
-        SetBkColor(hdcEdit, RGB(0, 0, 0));
-        return (INT_PTR)CreateSolidBrush(RGB(109, 194, 222));
+    case WM_CTLCOLOREDIT: 
+    {
+        HWND editControlNow = (HWND)lParam;
+        HMENU menuNow = GetMenu(editControlNow);
+        int menuNowId = int(menuNow);
+        if (find(checkRes.idsToGreen.begin(), checkRes.idsToGreen.end(), menuNowId) != checkRes.idsToGreen.end()) {
+            SetTextColor(hdcEdit, RGB(0, 255, 0));
+        }
+        else if (find(checkRes.idsToRed.begin(), checkRes.idsToRed.end(), menuNowId) != checkRes.idsToRed.end()) {
+            SetTextColor(hdcEdit, RGB(255, 0, 0));
+        }
+        else {
+            SetTextColor(hdcEdit, RGB(0, 0, 0));
+        }
+        SelectObject(hdcEdit, CreateSolidBrush(RGB(255, 255, 255)));
+        
+        return 0;
     }
-        break;*/
+    break;
     case Cross1Message: 
     {
+        if (crossOnField.size() != 0) {
+            for (map<int, HWND>::iterator it = crossOnField.begin(); it != crossOnField.end(); ++it) {
+                DestroyWindow(it->second);
+            };
+            crossOnField.clear();
+        }
+        cross = crosswords[0];
         ShowWindow(hWnd, 1);
         RedrawWindow(hWnd, NULL, NULL, RDW_INTERNALPAINT | RDW_INVALIDATE | RDW_UPDATENOW | RDW_ALLCHILDREN);
-        DrawCrossword(0, hWnd); 
+        DrawCrossword(hWnd); 
 
         
     }
     break;
     case Cross2Message: 
     {
+        if (crossOnField.size() != 0) {
+            for (map<int, HWND>::iterator it = crossOnField.begin(); it != crossOnField.end(); ++it) {
+                DestroyWindow(it->second);
+            };
+            crossOnField.clear();
+        }
+        cross = crosswords[1];
         ShowWindow(hWnd, 1);
         RedrawWindow(hWnd, NULL, NULL, RDW_INTERNALPAINT | RDW_INVALIDATE | RDW_UPDATENOW | RDW_ALLCHILDREN);
-        DrawCrossword(1, hWnd);
+        DrawCrossword(hWnd);
 
     }
     break;
     case Cross3Message: 
     {
+        if (crossOnField.size() != 0) {
+            for (map<int, HWND>::iterator it = crossOnField.begin(); it != crossOnField.end(); ++it) {
+                DestroyWindow(it->second);
+            };
+            crossOnField.clear();
+        }
+        cross = crosswords[2];
         ShowWindow(hWnd, 1);
         RedrawWindow(hWnd, NULL, NULL, RDW_INTERNALPAINT | RDW_INVALIDATE | RDW_UPDATENOW | RDW_ALLCHILDREN);
-        DrawCrossword(2, hWnd);
+        DrawCrossword(hWnd);
 
     }
     break;
@@ -77,8 +115,36 @@ LRESULT CALLBACK CrossWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPa
         int wmId = LOWORD(wParam);
         if(crossOnField.find(wmId) != crossOnField.end())
         {
-            CrossCheckResult checkRes= checkCross(cross);
+            if (HIWORD(wParam) == EN_CHANGE)
+            {
+                checkRes = checkCross(cross);
+                if (checkRes.idsToGreen.size() == crossOnField.size()) {
+                    // Results changing
+                }
+                else {
+                    ShowWindow(hWnd, 1);
+                    RedrawWindow(hWnd, NULL, NULL, RDW_INTERNALPAINT | RDW_INVALIDATE | RDW_UPDATENOW | RDW_ALLCHILDREN);
+                    DrawCrossword(hWnd);
+                    for (map<int, HWND>::iterator it = crossOnField.begin(); it != crossOnField.end(); ++it) {
+                        /*if (find(checkRes.idsToGreen.begin(), checkRes.idsToGreen.end(), it->first) != checkRes.idsToGreen.end()) {
+                            SetTextColor(hdcEdit, RGB(0, 255, 0));
+                            SendMessage(hWnd, WM_CTLCOLOREDIT, (WPARAM)hdcEdit, (LPARAM)it->first);
 
+                        }
+                        else if (find(checkRes.idsToRed.begin(), checkRes.idsToRed.end(), it->first) != checkRes.idsToRed.end()) {
+                            SetTextColor(hdcEdit, RGB(255, 0, 0));
+                            SendMessage(hWnd, WM_CTLCOLOREDIT, (WPARAM)hdcEdit, (LPARAM)it->first);
+
+                        }
+                        else {
+                            SetTextColor(hdcEdit, RGB(0, 0, 0));
+                            SendMessage(hWnd, WM_CTLCOLOREDIT, (WPARAM)hdcEdit, (LPARAM)it->first);
+
+                        }*/
+                        SendMessage(hWnd, WM_CTLCOLOREDIT, (WPARAM)hdcEdit, (LPARAM)it->first);
+                    }
+                }
+            }
             break;
         }
         // Parse the menu selections:
@@ -134,6 +200,10 @@ LRESULT CALLBACK CrossWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPa
         descStartX = width * 0.46 + 10;
         descStartY = 90;
         Rectangle(hdc, descStartX - 10, descStartY - 5, 1370, 570);
+
+
+
+
         EndPaint(crossWnd, &ps); //закончили рисование
 
     }
@@ -146,22 +216,15 @@ LRESULT CALLBACK CrossWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPa
     }
     return 0;
 }
-void DrawCrossword(int num, HWND hWnd)
+void DrawCrossword(HWND hWnd)
 {
     HDC hdc = GetDC(hWnd);
     SetTextColor(hdc, RGB(65, 45, 58));
     SetBkColor(hdc, color);
     SetBkMode(hdc, TRANSPARENT);
     SelectObject(hdc, textFont);
-
-    if (crossOnField.size() != 0) {
-        for (map<int, HWND>::iterator it = crossOnField.begin(); it != crossOnField.end(); ++it) {
-            DestroyWindow(it->second);
-        };
-        crossOnField.clear();
-    }
+   
     int wId = 1;
-    cross = crosswords[num];
     int hStep = (crosswordFieldWidth - 90) / cross.getSize_horizontal();
     int vStep = (crosswordFieldHeight - 90) / cross.getSize_vertical();
     int startX = 85;
@@ -194,8 +257,8 @@ void DrawCrossword(int num, HWND hWnd)
                 }
             }
         }
-        SelectObject(hdc, textFont);
         //Draw id's
+        SelectObject(hdc, textFont);
         if (place.getIsHorizontal()) {
             if (wId < 10) {
                 TextOut(hdc, (startX + place.getXPlace() * hStep) - hStep * 0.4, startY + place.getYPlace() * vStep + vStep * 0.25, to_wstring(wId).c_str(), 1);
@@ -271,16 +334,16 @@ CrossCheckResult checkCross(Crossword cross){
         bool areAllLetters = true;
         for (int i = 0; i < wordNow.getWord().length(); i++) {
             if (placeNow.getIsHorizontal()) {
-                TCHAR buff[1];
-                GetWindowText(crossOnField[stoi(to_string(placeNow.getXPlace()+i)+to_string(placeNow.getYPlace()))], buff, 1);
+                TCHAR buff[2];
+                GetWindowText(crossOnField[stoi(to_string(placeNow.getXPlace()+i)+to_string(placeNow.getYPlace()))], buff, 2);
                 if (wcslen(buff) == 0) {
                     areAllLetters = false;
                     break;
                 }
             }
             else {
-                TCHAR buff[1];
-                GetWindowText(crossOnField[stoi(to_string(placeNow.getXPlace()) + to_string(placeNow.getYPlace()+i))], buff, 1);
+                TCHAR buff[2];
+                GetWindowText(crossOnField[stoi(to_string(placeNow.getXPlace()) + to_string(placeNow.getYPlace()+i))], buff, 2);
                 if (wcslen(buff) == 0) {
                     areAllLetters = false;
                     break;
@@ -292,16 +355,16 @@ CrossCheckResult checkCross(Crossword cross){
             bool makeGreen = true;
             for (int i = 0; i < wordNow.getWord().length(); i++) {
                 if (placeNow.getIsHorizontal()) {
-                    TCHAR buff[1];
-                    GetWindowText(crossOnField[stoi(to_string(placeNow.getXPlace() + i) + to_string(placeNow.getYPlace()))], buff, 1);
+                    TCHAR buff[2];
+                    GetWindowText(crossOnField[stoi(to_string(placeNow.getXPlace() + i) + to_string(placeNow.getYPlace()))], buff, 2);
                     if (buff[0] != wordNow.getWord()[i]) {
                         makeGreen = false;
                         break;
                     }
                 }
                 else {
-                    TCHAR buff[1];
-                    GetWindowText(crossOnField[stoi(to_string(placeNow.getXPlace()) + to_string(placeNow.getYPlace() + i))], buff, 1);
+                    TCHAR buff[2];
+                    GetWindowText(crossOnField[stoi(to_string(placeNow.getXPlace()) + to_string(placeNow.getYPlace() + i))], buff, 2);
                     if (buff[0] != wordNow.getWord()[i]) {
                         makeGreen = false;
                         break;
