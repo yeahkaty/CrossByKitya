@@ -180,7 +180,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
     mainWnd = CreateWindowW(szMainWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
     int style = GetWindowLong(mainWnd, GWL_STYLE); //gets current style
-    SetWindowLong(mainWnd, GWL_STYLE, (unsigned int)(style & ~(WS_SIZEBOX | WS_MAXIMIZEBOX)));
+    SetWindowLong(mainWnd, GWL_STYLE, (unsigned int)(style & ~(WS_SIZEBOX | WS_MAXIMIZEBOX | WS_MINIMIZEBOX)));
 
     if (!mainWnd)
     {
