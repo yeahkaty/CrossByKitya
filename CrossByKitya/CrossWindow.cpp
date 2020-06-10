@@ -153,7 +153,6 @@ void DrawCrossword(int num, HWND hWnd)
         crossOnField.clear();
     }
     int wId = 1;
-    int id = 0;
     Crossword cross = crosswords[num];
     int hStep = (crosswordFieldWidth - 90) / cross.getSize_horizontal();
     int vStep = (crosswordFieldHeight - 90) / cross.getSize_vertical();
@@ -164,30 +163,37 @@ void DrawCrossword(int num, HWND hWnd)
     for (map<Word, Place>::iterator it = displacement.begin(); it != displacement.end(); ++it) {
         Word wordNow = it->first;
         Place place = it->second;
-       
+        int editIdNow = 0;
         //Draw textboxes
         HFONT tempFont = CreateFont(vStep-10, hStep-16, 0, 0, FW_DONTCARE, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_OUTLINE_PRECIS,
             CLIP_DEFAULT_PRECIS, ANTIALIASED_QUALITY, MONO_FONT, TEXT("Courier"));
         for (int i = 0; i < wordNow.getLength(); i++) {
             if (place.getIsHorizontal()) {
-                crossOnField.insert(pair<int, HWND>(id + 900, CreateWindow(TEXT("Edit"), TEXT(""), WS_VISIBLE | WS_TABSTOP | WS_CHILD | WS_BORDER, startX + (place.getXPlace() + i) * hStep, startY + place.getYPlace() * vStep, hStep, vStep, crossWnd, (HMENU)id + 900, hInst, NULL)));
-                SendMessage(crossOnField[id+900], WM_SETFONT, (WPARAM)tempFont, TRUE);
+                editIdNow = stoi(to_string(place.getXPlace()+i)+to_string(place.getYPlace()));
+                if (crossOnField.find(editIdNow) == crossOnField.end())
+                {
+                    crossOnField.insert(pair<int, HWND>(editIdNow, CreateWindow(TEXT("Edit"), TEXT(""), WS_VISIBLE | WS_TABSTOP | WS_CHILD | WS_BORDER, startX + (place.getXPlace() + i) * hStep, startY + place.getYPlace() * vStep, hStep, vStep, crossWnd, (HMENU)editIdNow + 900, hInst, NULL)));
+                    SendMessage(crossOnField[editIdNow], WM_SETFONT, (WPARAM)tempFont, TRUE);
+                }  
             }
             else {
-                crossOnField.insert(pair<int, HWND>(id + 900, CreateWindow(TEXT("Edit"), TEXT(""), WS_VISIBLE | WS_TABSTOP | WS_CHILD | WS_BORDER, startX + place.getXPlace() * hStep, startY + (place.getYPlace() + i) * vStep, hStep, vStep, crossWnd, (HMENU)id + 900, hInst, NULL)));
-                SendMessage(crossOnField[id+900], WM_SETFONT, (WPARAM)tempFont, TRUE);
+                editIdNow = stoi(to_string(place.getXPlace()) + to_string(place.getYPlace()+i));
 
+                if (crossOnField.find(editIdNow) == crossOnField.end())
+                {
+                    crossOnField.insert(pair<int, HWND>(editIdNow, CreateWindow(TEXT("Edit"), TEXT(""), WS_VISIBLE | WS_TABSTOP | WS_CHILD | WS_BORDER, startX + place.getXPlace() * hStep, startY + (place.getYPlace() + i) * vStep, hStep, vStep, crossWnd, (HMENU)editIdNow + 900, hInst, NULL)));
+                    SendMessage(crossOnField[editIdNow], WM_SETFONT, (WPARAM)tempFont, TRUE);
+                }
             }
-            id++;
         }
         SelectObject(hdc, textFont);
         //Draw id's
         if (place.getIsHorizontal()) {
             if (wId < 10) {
-                TextOut(hdc, (startX + place.getXPlace() * hStep) - hStep * 0.35, startY + place.getYPlace() * vStep + vStep * 0.25, to_wstring(wId).c_str(), 1);
+                TextOut(hdc, (startX + place.getXPlace() * hStep) - hStep * 0.4, startY + place.getYPlace() * vStep + vStep * 0.25, to_wstring(wId).c_str(), 1);
             }
             else {
-                TextOut(hdc, (startX + place.getXPlace() * hStep) - hStep * 0.7, startY + place.getYPlace() * vStep + vStep * 0.25, to_wstring(wId).c_str(), 2);
+                TextOut(hdc, (startX + place.getXPlace() * hStep) - hStep * 0.8, startY + place.getYPlace() * vStep + vStep * 0.25, to_wstring(wId).c_str(), 2);
             }
         }
         else {
