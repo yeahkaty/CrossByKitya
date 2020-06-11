@@ -1,8 +1,13 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include "CrossWindow.h"
 #include "CrossByKitya.h"
 #include "Crossword.h"
 #include "TxtConvertor.h"
 #include <vector>
+#include <chrono>
+#include <ctime>
+#include <time.h>
 
 class CrossCheckResult {
 public:
@@ -17,10 +22,10 @@ public:
     }
 };
 
-
+auto start = std::chrono::system_clock::now();
 void DrawCrossword(HWND hWnd);
 CrossCheckResult checkCross(Crossword cross);
-//#define testTextBox 500
+#define testTextBox 999
 HWND backToChooseBtn;
 int crosswordFieldWidth;
 int crosswordFieldHeight;
@@ -29,7 +34,8 @@ int descStartY;
 CrossCheckResult checkRes;
 map<int, HWND> crossOnField;
 Crossword cross;
-//HWND TextBox;
+int sumLength;
+HWND nameTextBox;
 
 LRESULT CALLBACK CrossWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
 
@@ -41,7 +47,8 @@ LRESULT CALLBACK CrossWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPa
     {
         backToChooseBtn = CreateWindow(TEXT("BUTTON"), TEXT("Give up"), (WS_VISIBLE | WS_CHILD), 970, 600, 400, 75, hWnd, (HMENU)BTN_CHOOSE_BACKTOCHOOSE, hInst, NULL);
         SendMessage(backToChooseBtn, WM_SETFONT, (WPARAM)bigButtonFont, TRUE);
-        //TextBox = CreateWindow(TEXT("Edit"), TEXT(""), WS_VISIBLE | WS_CHILD | WS_BORDER, 200, 200, 200, 200, hWnd, (HMENU)testTextBox, hInst, NULL);
+        nameTextBox = CreateWindow(TEXT("Edit"), TEXT(""), WS_VISIBLE | WS_CHILD | WS_BORDER, 580, 30, 400, 40, hWnd, (HMENU)testTextBox, hInst, NULL);
+        SendMessage(nameTextBox, WM_SETFONT, (WPARAM)textFont, TRUE);
     }
     break;
     case WM_CTLCOLOREDIT: 
@@ -72,6 +79,10 @@ LRESULT CALLBACK CrossWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPa
             crossOnField.clear();
         }
         cross = crosswords[0];
+        sumLength = 0;
+        for (map<Word, Place>::iterator it = (*cross.getMap()).begin(); it != (*cross.getMap()).end(); ++it) {
+            sumLength += it->first.length;
+        }
         ShowWindow(hWnd, 1);
         RedrawWindow(hWnd, NULL, NULL, RDW_INTERNALPAINT | RDW_INVALIDATE | RDW_UPDATENOW | RDW_ALLCHILDREN);
         DrawCrossword(hWnd); 
@@ -88,6 +99,10 @@ LRESULT CALLBACK CrossWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPa
             crossOnField.clear();
         }
         cross = crosswords[1];
+        sumLength = 0;
+        for (map<Word, Place>::iterator it = (*cross.getMap()).begin(); it != (*cross.getMap()).end(); ++it) {
+            sumLength += it->first.length;
+        }
         ShowWindow(hWnd, 1);
         RedrawWindow(hWnd, NULL, NULL, RDW_INTERNALPAINT | RDW_INVALIDATE | RDW_UPDATENOW | RDW_ALLCHILDREN);
         DrawCrossword(hWnd);
@@ -103,6 +118,10 @@ LRESULT CALLBACK CrossWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPa
             crossOnField.clear();
         }
         cross = crosswords[2];
+        sumLength = 0;
+        for (map<Word, Place>::iterator it = (*cross.getMap()).begin(); it != (*cross.getMap()).end(); ++it) {
+            sumLength += it->first.length;
+        }
         ShowWindow(hWnd, 1);
         RedrawWindow(hWnd, NULL, NULL, RDW_INTERNALPAINT | RDW_INVALIDATE | RDW_UPDATENOW | RDW_ALLCHILDREN);
         DrawCrossword(hWnd);
@@ -118,8 +137,47 @@ LRESULT CALLBACK CrossWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPa
             if (HIWORD(wParam) == EN_CHANGE)
             {
                 checkRes = checkCross(cross);
-                if (checkRes.idsToGreen.size() == crossOnField.size()) {
-                    // Results changing
+                if (checkRes.idsToGreen.size() == sumLength) {
+                    auto end = std::chrono::system_clock::now();
+                    std::chrono::duration<double> elapsed_seconds = end - start;
+                    std::time_t end_time = std::chrono::system_clock::to_time_t(end);
+                    
+                    TCHAR buff[12];
+                    GetWindowText(nameTextBox, buff, 12);
+                    string time = to_string((int)floor(elapsed_seconds.count()/60))+":";
+                    int secs = floor(elapsed_seconds.count());
+                    secs %= 60;
+                    if (secs < 10) {
+                        time += "0";
+                    }
+                    time += to_string(secs);
+                    wstring wName = wstring(&buff[0]);
+                    string name = string(wName.begin(), wName.end());
+                    string scores = to_string((int)((1500 / elapsed_seconds.count()) * cross.getLevel()));
+
+
+                    std::time_t t = std::time(nullptr);
+                    char mbstr[100];
+                    std::strftime(mbstr, sizeof(mbstr), "%F", std::localtime(&t));
+
+                    string date = string(mbstr);
+
+
+
+                    results.push_back(Result(name,time,scores,date));
+                    results=txtParser.SortResults(results);
+                    txtParser.WriteResults(results);
+
+
+                    int crossStyle = GetWindowLong(hWnd, GWL_STYLE);
+                    SetWindowLong(hWnd, GWL_STYLE, (unsigned int)(crossStyle & ~(WS_VISIBLE)));
+                    int chooseStyle = GetWindowLong(chooseCrossesWnd, GWL_STYLE);
+                    SetWindowLong(chooseCrossesWnd, GWL_STYLE, (unsigned int)(chooseStyle | (WS_VISIBLE)));
+                    ShowWindow(mainWnd, 1);
+                    UpdateWindow(mainWnd);
+                    RedrawWindow(chooseCrossesWnd, NULL, NULL, RDW_INTERNALPAINT | RDW_INVALIDATE | RDW_UPDATENOW | RDW_ALLCHILDREN);
+                    //std::cout << "finished computation at " << std::ctime(&end_time)
+                        //std::cout << "elapsed time: " << elapsed_seconds.count() << "s\n";
                 }
                 else {
                     ShowWindow(hWnd, 1);
@@ -185,7 +243,7 @@ LRESULT CALLBACK CrossWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPa
         Rectangle(hdc, 0, 0, width, height);
         // End of erase
         
-        TCHAR titleText[] = L"Cross";
+        TCHAR titleText[] = L"Cross is puzzled by";
         SetTextColor(hdc, RGB(255, 170, 220));
         SetBkColor(hdc, RGB(255, 255, 255));
         SelectObject(hdc, titleFont);
@@ -373,6 +431,7 @@ CrossCheckResult checkCross(Crossword cross){
             }
             if (makeGreen) {
                 for (int i = 0; i < wordNow.getWord().length(); i++) {
+                    
                     if (placeNow.getIsHorizontal()) {
                         greenIds.push_back(stoi(to_string(placeNow.getXPlace() + i) + to_string(placeNow.getYPlace())));
                     }
