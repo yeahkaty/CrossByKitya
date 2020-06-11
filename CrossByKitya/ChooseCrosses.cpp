@@ -220,8 +220,8 @@ LRESULT CALLBACK    ChooseCrossesWndProc(HWND hWnd, UINT message, WPARAM wParam,
 
             TextOut(hdc, 780, 115 + (i + 1) * 20, wRsName.c_str(), wRsName.length());
             TextOut(hdc, 980, 115 + (i + 1) * 20, wRsScores.c_str(), wRsScores.length());
-            TextOut(hdc, 1080, 115 + (i + 1) * 20, wRsData.c_str(), wRsData.length());
-            TextOut(hdc, 1180, 115 + (i + 1) * 20, wRsTime.c_str(), wRsTime.length());
+            TextOut(hdc, 1180, 115 + (i + 1) * 20, wRsData.c_str(), wRsData.length());
+            TextOut(hdc, 1080, 115 + (i + 1) * 20, wRsTime.c_str(), wRsTime.length());
         }
 
 

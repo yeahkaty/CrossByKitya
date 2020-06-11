@@ -7,8 +7,7 @@ class Result
 {
 private:
 	string name;
-	string time;
-	
+	string time;	
 	string data;
 public:
 	string scores;

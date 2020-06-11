@@ -51,7 +51,7 @@ public:
 		//out.open(resultsPath);
 		for (int i = 0; i < results.size(); i++)
 		{
-			out << results[i].getName() << ", " << results[i].getData() << ", " << results[i].getScores() << ", " << results[i].getTime() << endl;
+			out << results[i].getName() << ", " << results[i].getTime() << ", " << results[i].getScores() << ", " << results[i].getData() << endl;
 		}
 		out.close();
 	}
